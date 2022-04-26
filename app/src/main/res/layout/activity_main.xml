@@ -54,14 +54,6 @@
             android:onClick="addUserButtonOnClick"
             android:text="Dodaj użytkownika" />
 
-        <Button
-            android:id="@+id/displayUsersButon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:onClick="displayUsersButtonOnClick"
-            android:text="Wyświetl użytkowników" />
-
         <TextView
             android:id="@+id/textViewUsers"
             android:layout_width="match_parent"

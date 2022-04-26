@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultTextView;
     private FirebaseDatabase database;
     private DatabaseReference messageRef;
+    private DatabaseReference usersRef;
     private int licznik = 1;
 
     @Override
@@ -35,23 +36,42 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance("https://fir-app-f558a-default-rtdb.firebaseio.com/");
         messageRef = database.getReference("message");
+        usersRef = database.getReference("users");
 
         // Read from the database
-//        messageRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d("tag", "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.d("tag", "Failed to read value.", error.toException());
-//            }
-//        });
+        messageRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //String value = dataSnapshot.getValue().toString();
+                String result = "Wiadomosci:\n";
+                //Log.i("tag", "Value is: " + value);
+                for (DataSnapshot dsp : dataSnapshot.getChildren()){
+                    result += dsp.getValue().toString() + "\n";
+                }
+                resultTextView.setText(result);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //String value = dataSnapshot.getValue().toString();
+                String result = "Użytkownicy:\n";
+                //Log.i("tag", "Value is: " + value);
+                for (DataSnapshot dsp : dataSnapshot.getChildren()){
+                    result += dsp.getValue().toString() + "\n";
+                }
+                resultTextView.setText(result);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 
     public void addUserButtonOnClick(View view){
@@ -59,23 +79,30 @@ public class MainActivity extends AppCompatActivity {
         //myRef.setValue("Hello, World!");
         messageRef.child("Wiadomosc_"+licznik).setValue("Treść wiadomosci: "+licznik);
         licznik++;
+
+        String name = userNameInput.getText().toString();
+        String age = userAgeInput.getText().toString();
+        String height = userHeightInput.getText().toString();
+        
     }
 
-    public void displayUsersButtonOnClick(View view){
-        Log.i("info","wyswietlono");
-
-        Task<DataSnapshot> task = messageRef.get();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        DataSnapshot ds = task.getResult();
-        Object value = ds.getValue();
-        resultTextView.setText(value.toString());
-    }
+//    public void displayUsersButtonOnClick(View view){
+//        Log.i("info","wyswietlono");
+//
+//        Task<DataSnapshot> task = messageRef.get();
+//
+//
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        DataSnapshot ds = task.getResult();
+//
+//        Object value = ds.getValue();
+//        resultTextView.setText(value.toString());
+//    }
 
 
 
