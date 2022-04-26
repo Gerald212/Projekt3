@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 //Log.i("tag", "Value is: " + value);
                 for (DataSnapshot dsp : dataSnapshot.getChildren()){
                     //result += dsp.getValue().toString() + "\n";
-                    result += dsp.getKey() + ": " + dsp.getValue() + "\n";
+                    User userData = dsp.getValue(User.class);
+                    result += dsp.getKey() + " - " + "Wiek: " + userData.getAge() + " Wzrost: " + userData.getHeight() + "\n";
+                    //result += dsp.getKey() + ": " + dsp.getValue() + "\n";
                 }
                 resultTextView.setText(result);
             }
