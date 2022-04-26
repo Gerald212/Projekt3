@@ -38,23 +38,23 @@ public class MainActivity extends AppCompatActivity {
         messageRef = database.getReference("message");
         usersRef = database.getReference("users");
 
-        // Read from the database
-        messageRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //String value = dataSnapshot.getValue().toString();
-                String result = "Wiadomosci:\n";
-                //Log.i("tag", "Value is: " + value);
-                for (DataSnapshot dsp : dataSnapshot.getChildren()){
-                    result += dsp.getValue().toString() + "\n";
-                }
-                resultTextView.setText(result);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
+//        // Read from the database
+//        messageRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                //String value = dataSnapshot.getValue().toString();
+//                String result = "Wiadomosci:\n";
+//                //Log.i("tag", "Value is: " + value);
+//                for (DataSnapshot dsp : dataSnapshot.getChildren()){
+//                    result += dsp.getValue().toString() + "\n";
+//                }
+//                resultTextView.setText(result);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//            }
+//        });
 
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 String result = "Użytkownicy:\n";
                 //Log.i("tag", "Value is: " + value);
                 for (DataSnapshot dsp : dataSnapshot.getChildren()){
-                    result += dsp.getValue().toString() + "\n";
+                    //result += dsp.getValue().toString() + "\n";
+                    result += dsp.getKey() + ": " + dsp.getValue() + "\n";
                 }
                 resultTextView.setText(result);
             }
@@ -80,10 +81,20 @@ public class MainActivity extends AppCompatActivity {
         messageRef.child("Wiadomosc_"+licznik).setValue("Treść wiadomosci: "+licznik);
         licznik++;
 
-        String name = userNameInput.getText().toString();
-        String age = userAgeInput.getText().toString();
-        String height = userHeightInput.getText().toString();
-        
+        int age = -1;
+        int height = -1;
+        String name = "";
+        name = userNameInput.getText().toString();
+        age = Integer.parseInt(userAgeInput.getText().toString());
+        height = Integer.parseInt(userHeightInput.getText().toString());
+
+        if(name != "" && age != -1 && height != -1){
+
+            usersRef.child(name).child("age").setValue(age);
+            usersRef.child(name).child("height").setValue(height);
+        }
+
+
     }
 
 //    public void displayUsersButtonOnClick(View view){
